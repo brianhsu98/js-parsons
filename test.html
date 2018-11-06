@@ -31,7 +31,8 @@
     let ParsonsGlobal = {};
     ParsonsGlobal.initial = `def hello_world():
     !BLANK = True
-    return "Hello World"`;
+    return "Hello World"
+    for !BLANK in !BLANK`;
 
 
     $(document).ready(function() {
@@ -43,6 +44,10 @@
             ParsonsGlobal.widget.init(ParsonsGlobal.initial);
             ParsonsGlobal.widget.alphabetize();
         });
+
+    function printSolution() {
+        return ParsonsGlobal.widget.solutionCode();
+    }
     </script>
 
 </html>

@@ -1046,7 +1046,13 @@
      var code = "";
      var lines = this.normalizeIndents(this.getModifiedCode("#ul-" + this.options.sortableId));
      for (var i = 0; i < lines.length; i++) {
-       code += "  ".repeat(lines[i].indent) + lines[i].code + "\n";
+       let codeLine = lines[i].code;
+       let inputIDs = codeLine.match(/id='(.*)' type/);
+       if (inputIDs !== null && inputIDs.length >= 2) {
+         let input = $("#" + inputIDs[1]).val();
+         codeLine = codeLine.replace(/<input (.*)\/>/, input);
+       }
+       code += "  ".repeat(lines[i].indent) + codeLine + "\n";
      }
      return code;
    };
@@ -1388,6 +1394,8 @@
 
 
     ParsonsWidget.prototype.codeLineToHTML = function(codeline) {
+        // TODO: Supports only 1 blank per line. Fix this!
+        codeline.code = codeline.code.replace("!BLANK", "<input id='" + codeline.id + "-INPUT' type='text'/>");
         return '<li id="' + codeline.id + '" class="prettyprint lang-py">' + codeline.code + '<\/li>';
     };
 
