@@ -789,7 +789,17 @@
       });
    };
 
-  // Create a line object skeleton with only code and indentation from
+  // Creates a random GUID
+  // Credits to here: https://stackoverflow.com/questions/6860853/generate-random-string-for-div-id
+  var guidGenerator = function() {
+    let S4 = function() {
+      return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+    };
+    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+  };
+
+
+        // Create a line object skeleton with only code and indentation from
   // a code string of an assignment definition string (see parseCode)
   var ParsonsCodeline = function(codestring, widget) {
     this.widget = widget;
@@ -1046,11 +1056,16 @@
      var code = "";
      var lines = this.normalizeIndents(this.getModifiedCode("#ul-" + this.options.sortableId));
      for (var i = 0; i < lines.length; i++) {
-       let codeLine = lines[i].code;
-       let inputIDs = codeLine.match(/id='(.*)' type/);
-       if (inputIDs !== null && inputIDs.length >= 2) {
-         let input = $("#" + inputIDs[1]).val();
-         codeLine = codeLine.replace(/<input (.*)\/>/, input);
+       codeLine = lines[i].code;
+       IDs = [];
+       $("#" + lines[i].id + " > input").each(function() {
+           IDs.push(this.id);
+       });
+       for (let i = 0; i < IDs.length; i += 1) {
+         let replace = "<input id='" + IDs[i] + "' type='text'/>";
+         let re = new RegExp(replace, "g");
+         let input = $("#" + IDs[i]).val();
+         codeLine = codeLine.replace(re, input);
        }
        code += "  ".repeat(lines[i].indent) + codeLine + "\n";
      }
@@ -1394,8 +1409,9 @@
 
 
     ParsonsWidget.prototype.codeLineToHTML = function(codeline) {
-        // TODO: Supports only 1 blank per line. Fix this!
-        codeline.code = codeline.code.replace("!BLANK", "<input id='" + codeline.id + "-INPUT' type='text'/>");
+        codeline.code = codeline.code.replace(/!BLANK/g, function() {
+          return "<input id='" + guidGenerator() + "' type='text'/>"
+        });
         return '<li id="' + codeline.id + '" class="prettyprint lang-py">' + codeline.code + '<\/li>';
     };
 
