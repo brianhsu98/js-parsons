@@ -117,9 +117,10 @@ li.correctPosition, .testcase.pass {
 /** For input within parsons blocks */
 .text-box {
     border: solid 1px black;
-    min-width:100px;
+    width:80px;
+    min-width:80px;
     padding: 5px;
-    display: inline-block;
+    font-size: 13.3333px;
     font-family: monospace;
 }
 

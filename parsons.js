@@ -799,7 +799,7 @@
   };
 
 
-        // Create a line object skeleton with only code and indentation from
+  // Create a line object skeleton with only code and indentation from
   // a code string of an assignment definition string (see parseCode)
   var ParsonsCodeline = function(codestring, widget) {
     this.widget = widget;
@@ -1062,7 +1062,8 @@
            IDs.push(this.id);
        });
        for (let i = 0; i < IDs.length; i += 1) {
-         let replace = "<input class='text-box' id='" + IDs[i] + "' type='text'/>";
+         replace = "<input class='text-box' onkeypress=\\\"this\\.style\\.width = \\(\\(this\\.value\\.length " +
+             "\\+ 3\\) \\* 8\\) \\+ 'px';\\\" id='" + IDs[i]  + "' type='text'/>";
          let re = new RegExp(replace, "g");
          let input = $("#" + IDs[i]).val();
          codeLine = codeLine.replace(re, input);
@@ -1410,7 +1411,8 @@
 
     ParsonsWidget.prototype.codeLineToHTML = function(codeline) {
         codeline.code = codeline.code.replace(/!BLANK/g, function() {
-          return "<input class='text-box' id='" + guidGenerator() + "' type='text'/>"
+          return "<input class='text-box' onkeypress=\"this.style.width = ((this.value.length + 3) * 8) + 'px';\" " +
+              "id='" + guidGenerator() + "' type='text'/>"
         });
         return '<li id="' + codeline.id + '" class="prettyprint lang-py">' + codeline.code + '<\/li>';
     };
