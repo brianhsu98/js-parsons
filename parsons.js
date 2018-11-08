@@ -1062,7 +1062,7 @@
            IDs.push(this.id);
        });
        for (let i = 0; i < IDs.length; i += 1) {
-         let replace = "<input id='" + IDs[i] + "' type='text'/>";
+         let replace = "<input class='text-box' id='" + IDs[i] + "' type='text'/>";
          let re = new RegExp(replace, "g");
          let input = $("#" + IDs[i]).val();
          codeLine = codeLine.replace(re, input);
@@ -1410,7 +1410,7 @@
 
     ParsonsWidget.prototype.codeLineToHTML = function(codeline) {
         codeline.code = codeline.code.replace(/!BLANK/g, function() {
-          return "<input id='" + guidGenerator() + "' type='text'/>"
+          return "<input class='text-box' id='" + guidGenerator() + "' type='text'/>"
         });
         return '<li id="' + codeline.id + '" class="prettyprint lang-py">' + codeline.code + '<\/li>';
     };

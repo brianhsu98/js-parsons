@@ -113,3 +113,17 @@ li.correctPosition, .testcase.pass {
     display: block;
     color: red;
 }
+
+/** For input within parsons blocks */
+.text-box {
+    border: solid 1px black;
+    min-width:100px;
+    padding: 5px;
+    display: inline-block;
+    font-family: monospace;
+}
+
+.text-box:focus{
+    outline:0;
+}
+
