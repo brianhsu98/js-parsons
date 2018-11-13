@@ -1055,19 +1055,13 @@
    ParsonsWidget.prototype.solutionCode = function() {
      var code = "";
      var lines = this.normalizeIndents(this.getModifiedCode("#ul-" + this.options.sortableId));
-     for (var i = 0; i < lines.length; i++) {
-       codeLine = lines[i].code;
-       IDs = [];
-       $("#" + lines[i].id + " > input").each(function() {
-           IDs.push(this.id);
+     for (let i = 0; i < lines.length; i++) {
+       let codeLine = lines[i].code;
+       $("#" + lines[i].id + " > input").each(function(_, inp) {
+         let replace = "<input .*? id='" + inp.id + "'.*?\\/>";
+         let re = new RegExp(replace);
+         codeLine = codeLine.replace(re, inp.value);
        });
-       for (let i = 0; i < IDs.length; i += 1) {
-         replace = "<input class='text-box' onkeypress=\\\"this\\.style\\.width = \\(\\(this\\.value\\.length " +
-             "\\+ 3\\) \\* 8\\) \\+ 'px';\\\" id='" + IDs[i]  + "' type='text'/>";
-         let re = new RegExp(replace, "g");
-         let input = $("#" + IDs[i]).val();
-         codeLine = codeLine.replace(re, input);
-       }
        code += "  ".repeat(lines[i].indent) + codeLine + "\n";
      }
      return code;
@@ -1411,8 +1405,8 @@
 
     ParsonsWidget.prototype.codeLineToHTML = function(codeline) {
         codeline.code = codeline.code.replace(/!BLANK/g, function() {
-          return "<input class='text-box' onkeypress=\"this.style.width = ((this.value.length + 3) * 8) + 'px';\" " +
-              "id='" + guidGenerator() + "' type='text'/>"
+          return "<input type = 'text' class='text-box' onkeypress=\"this.style.width = ((this.value.length + 3) * 8) + " +
+              "'px';\" "+ "id='" + guidGenerator() + "'/>"
         });
         return '<li id="' + codeline.id + '" class="prettyprint lang-py">' + codeline.code + '<\/li>';
     };
